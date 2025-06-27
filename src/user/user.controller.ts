@@ -1,5 +1,5 @@
 import {UserService} from "./user.service";
-import {Controller, Get} from "@nestjs/common";
+import { Controller, Get, Param, ParseIntPipe } from "@nestjs/common";
 
 @Controller('user')
 export class UserController{
@@ -10,5 +10,10 @@ export class UserController{
     @Get('random')
     async getRandomUser() {
        return this.userService.getRandomUser();
+    }
+
+    @Get('/info/:id')
+    async getUserById(@Param('id', ParseIntPipe) id: number) {
+        return this.userService.getUserById(id);
     }
 }

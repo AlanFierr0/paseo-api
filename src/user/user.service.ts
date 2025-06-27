@@ -1,5 +1,6 @@
 import {UserRepository} from "./user.repository";
-import {Injectable} from "@nestjs/common";
+import {Injectable, NotFoundException} from "@nestjs/common";
+import {UserDTO} from "./dto/user.dto";
 
 @Injectable()
 export class UserService{
@@ -9,6 +10,14 @@ export class UserService{
 
     async getRandomUser() {
         return this.userRepository.getRandomUser();
+    }
+
+    async getUserById(id: number): Promise<UserDTO | null> {
+        const user = await this.userRepository.getUserById(id);
+        if (!user) {
+            throw new NotFoundException(`User with id ${id} not found`);
+        }
+        return user;
     }
 
     // async createUser(name: string, email: string) {
