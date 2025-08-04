@@ -1,19 +1,19 @@
 import {PrismaService} from "../prisma/prisma.service";
-import {Inject} from "@nestjs/common";
 import {UserDTO} from "./dto/user.dto";
 
-export class UserRepository{
-    constructor(
-        @Inject(PrismaService) private readonly db: PrismaService
-    ) {}
+export class UserRepository {
+    constructor(private readonly db: PrismaService) {}
 
-    async getRandomUser() {
-        const users = await this.db.user.findMany();
-        const randomIndex = Math.floor(Math.random() * users.length);
-        return users[randomIndex];
+    async getRandomUser(): Promise<UserDTO | null> {
+        const count = await this.db.user.count();
+        if (count === 0) {
+            return null;
+        }
+        const skip = Math.floor(Math.random() * count);
+        return this.db.user.findFirst({skip});
     }
 
-    async getUserById(id: number): Promise<UserDTO| null > {
+    async getUserById(id: number): Promise<UserDTO | null> {
         return this.db.user.findUnique({
             where: {id},
         });
