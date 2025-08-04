@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Param, ParseIntPipe, Post} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post} from "@nestjs/common";
 import {DebtService} from "./debt.service";
 import {DebtDTO} from "./dto/debt.dto";
 
@@ -19,5 +19,10 @@ export class DebtController{
     @Get('/debtor/:debtorId')
     async getUserDebtorDebts(@Param('debtorId', ParseIntPipe) debtorId: number): Promise<DebtDTO[]> {
         return this.debtService.getUserDebtorDebts(debtorId);
+    }
+
+    @Delete('/:id')
+    async settleDebt(@Param('id', ParseIntPipe) id: number) {
+        return this.debtService.settleDebt(id);
     }
 }

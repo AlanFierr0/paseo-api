@@ -26,4 +26,16 @@ export class DebtRepository{
             where: { debtorId },
         });
     }
+
+    async getDebtById(id: number): Promise<DebtDTO | null> {
+        return this.db.debts.findUnique({
+            where: { id },
+        });
+    }
+
+    async settleDebt(id: number): Promise<DebtDTO> {
+        return this.db.debts.delete({
+            where: { id },
+        });
+    }
 }
