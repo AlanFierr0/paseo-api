@@ -41,4 +41,12 @@ export class DebtService {
         }
         return this.debtRepository.getUserDebtorDebts(debtorId);
     }
+
+    async settleDebt(id: number) {
+        const debt = await this.debtRepository.getDebtById(id);
+        if (!debt) {
+            throw new NotFoundException('Debt not found');
+        }
+        return this.debtRepository.settleDebt(id);
+    }
 }
